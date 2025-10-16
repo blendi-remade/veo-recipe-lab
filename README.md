@@ -148,7 +148,3 @@ Contributions, issues, and feature requests are welcome! Feel free to check the 
 If you have questions about this demo or want to learn more about building with fal.ai, check out:
 - [fal.ai Documentation](https://fal.ai/docs)
 - [fal.ai Discord](https://discord.gg/fal-ai)
-
----
-
-Made with 🧪 and ✨ by [Your Name](https://github.com/YOUR_USERNAME)
