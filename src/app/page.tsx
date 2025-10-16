@@ -46,37 +46,46 @@ export default function Home() {
     .filter((img) => img.url && ingredients[img.slot - 1].selected);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 p-4 md:p-8">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 p-4 md:p-8 relative overflow-hidden">
+      {/* Ambient background effects */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-pink-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+      </div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
         {/* Header */}
-        <div className="text-center mb-8 md:mb-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="text-5xl md:text-6xl">🧪</span>
-            <h1 className="text-4xl md:text-6xl font-bold text-white">
+        <div className="text-center mb-12 md:mb-16">
+          <div className="flex items-center justify-center gap-3 mb-6 animate-float">
+            <span className="text-5xl md:text-6xl animate-glow-pulse">🧪</span>
+            <h1 className="text-5xl md:text-7xl font-extrabold bg-gradient-to-r from-purple-200 via-pink-200 to-purple-200 bg-clip-text text-transparent">
               Visual Recipe Lab
             </h1>
-            <span className="text-5xl md:text-6xl">🧪</span>
+            <span className="text-5xl md:text-6xl animate-glow-pulse" style={{ animationDelay: '1s' }}>🧪</span>
           </div>
-          <p className="text-lg md:text-xl text-purple-200 max-w-3xl mx-auto">
+          <p className="text-lg md:text-xl text-purple-100 max-w-3xl mx-auto leading-relaxed">
             Create incredible videos by mixing visual ingredients! Generate up
             to 3 images, then combine them into one dynamic scene with AI.
           </p>
-          <div className="mt-4 flex items-center justify-center gap-4 text-sm text-purple-300">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-              Powered by Seedream v4
-            </span>
-            <span>•</span>
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></span>
-              Veo 3.1
-            </span>
+          <div className="mt-6 flex items-center justify-center gap-6 text-sm">
+            <div className="glass-card px-4 py-2 rounded-full">
+              <span className="flex items-center gap-2 text-purple-100">
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></span>
+                Seedream v4
+              </span>
+            </div>
+            <div className="glass-card px-4 py-2 rounded-full">
+              <span className="flex items-center gap-2 text-purple-100">
+                <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse shadow-lg shadow-pink-400/50"></span>
+                Veo 3.1
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Ingredient Cards */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4 text-center">
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-white mb-6 text-center bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
             Step 1: Generate Your Ingredients
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -151,8 +160,8 @@ export default function Home() {
         )}
 
         {/* Mixing Chamber */}
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-white mb-4 text-center">
+        <div className="mb-12">
+          <h2 className="text-3xl font-bold text-white mb-6 text-center bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
             Step 2: Mix Your Ingredients
           </h2>
           <MixingChamber selectedImages={selectedImages} />

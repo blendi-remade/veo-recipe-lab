@@ -113,20 +113,26 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
   const suggestions = getSuggestions();
 
   return (
-    <div className="relative bg-gradient-to-br from-purple-800/60 via-pink-800/40 to-indigo-800/60 backdrop-blur-lg rounded-3xl p-8 border-2 border-purple-400/50 shadow-2xl shadow-purple-500/20">
-      {/* Header */}
-      <div className="text-center mb-6">
-        <h2 className="text-3xl font-bold text-white mb-2 flex items-center justify-center gap-3">
-          <span className="text-4xl">🧪</span>
-          Mixing Chamber
-          <span className="text-4xl">🧪</span>
-        </h2>
-        <p className="text-purple-200 text-sm">
-          {selectedImages.length === 0
-            ? "Select 1-3 ingredients to begin mixing"
-            : `${selectedImages.length} ingredient${selectedImages.length > 1 ? "s" : ""} selected`}
-        </p>
-      </div>
+    <div className="relative glass-card rounded-3xl p-8 md:p-10 border-2 border-purple-400/50 shadow-2xl shadow-purple-500/30 overflow-hidden">
+      {/* Magical glow effect */}
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10 pointer-events-none"></div>
+      
+      <div className="relative z-10">
+        {/* Header */}
+        <div className="text-center mb-8">
+          <div className="flex items-center justify-center gap-3 mb-3">
+            <span className="text-4xl animate-glow-pulse">🧪</span>
+            <h2 className="text-4xl font-bold bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
+              Mixing Chamber
+            </h2>
+            <span className="text-4xl animate-glow-pulse" style={{ animationDelay: '1s' }}>🧪</span>
+          </div>
+          <p className="text-purple-100 text-sm font-medium">
+            {selectedImages.length === 0
+              ? "Select 1-3 ingredients to begin mixing"
+              : `${selectedImages.length} ingredient${selectedImages.length > 1 ? "s" : ""} selected`}
+          </p>
+        </div>
 
       {/* Selected Ingredients Display */}
       {selectedImages.length > 0 && (
@@ -234,25 +240,27 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
 
       {/* Video Result */}
       {videoUrl && (
-        <div className="mt-6 animate-fadeIn">
-          <div className="bg-black/30 rounded-xl p-4">
-            <h3 className="text-xl font-bold text-white mb-3 text-center">
+        <div className="mt-8 animate-fadeIn">
+          <div className="glass-card rounded-2xl p-6 border-2 border-purple-400/30">
+            <h3 className="text-2xl font-bold text-center mb-4 bg-gradient-to-r from-purple-200 to-pink-200 bg-clip-text text-transparent">
               ✨ Your Creation ✨
             </h3>
-            <video
-              src={videoUrl}
-              controls
-              className="w-full rounded-lg shadow-2xl"
-              autoPlay
-              loop
-            >
-              Your browser does not support the video tag.
-            </video>
-            <div className="mt-4 flex gap-2">
+            <div className="rounded-xl overflow-hidden shadow-2xl shadow-purple-500/50 border-2 border-purple-400/30">
+              <video
+                src={videoUrl}
+                controls
+                className="w-full"
+                autoPlay
+                loop
+              >
+                Your browser does not support the video tag.
+              </video>
+            </div>
+            <div className="mt-6 flex gap-3">
               <a
                 href={videoUrl}
                 download
-                className="flex-1 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg text-center transition-colors"
+                className="flex-1 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 px-6 rounded-xl text-center transition-all transform hover:scale-105 shadow-lg"
               >
                 💾 Download
               </a>
@@ -261,7 +269,7 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
                   setVideoUrl("");
                   setPrompt("");
                 }}
-                className="flex-1 bg-white/10 hover:bg-white/20 text-white font-semibold py-2 px-4 rounded-lg transition-colors"
+                className="flex-1 glass-card hover:bg-white/10 text-white font-semibold py-3 px-6 rounded-xl transition-all transform hover:scale-105 border border-white/30"
               >
                 🔄 Create Another
               </button>
@@ -270,13 +278,14 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
         </div>
       )}
 
-      {/* Empty State */}
-      {selectedImages.length === 0 && !loading && (
-        <div className="text-center py-12 text-white/40">
-          <div className="text-6xl mb-4">🧪</div>
-          <p className="text-lg">Select ingredients above to start mixing!</p>
-        </div>
-      )}
+        {/* Empty State */}
+        {selectedImages.length === 0 && !loading && (
+          <div className="text-center py-12 text-white/40">
+            <div className="text-6xl mb-4 animate-float">🧪</div>
+            <p className="text-lg">Select ingredients above to start mixing!</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

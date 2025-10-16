@@ -48,10 +48,10 @@ export default function IngredientCard({
 
   return (
     <div
-      className={`relative bg-gradient-to-br from-purple-900/50 to-indigo-900/50 backdrop-blur-lg rounded-2xl p-6 border-2 transition-all ${
+      className={`relative glass-card rounded-2xl p-6 transition-all duration-300 ${
         isSelected
-          ? "border-purple-400 shadow-lg shadow-purple-400/50 scale-105"
-          : "border-white/20 hover:border-white/40"
+          ? "border-2 border-purple-400 shadow-2xl shadow-purple-500/50 scale-[1.02]"
+          : "border-2 border-white/20 hover:border-purple-400/50 hover:shadow-xl hover:shadow-purple-500/20"
       }`}
     >
       {/* Slot Header */}
@@ -106,7 +106,7 @@ export default function IngredientCard({
           <button
             onClick={handleGenerate}
             disabled={!prompt.trim() || loading}
-            className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
+            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 shadow-lg hover:shadow-purple-500/50"
           >
             {loading ? "..." : "✨ Generate"}
           </button>
@@ -125,7 +125,7 @@ export default function IngredientCard({
       {imageUrl && !isRegenerating && (
         <button
           onClick={() => setIsRegenerating(true)}
-          className="w-full bg-white/10 hover:bg-white/20 text-white text-sm py-2 px-3 rounded-lg transition-colors"
+          className="w-full glass-card hover:bg-white/10 text-white text-sm py-2.5 px-4 rounded-xl transition-all transform hover:scale-105 border border-white/30"
         >
           🔄 Regenerate
         </button>
