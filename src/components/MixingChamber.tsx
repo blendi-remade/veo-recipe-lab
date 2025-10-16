@@ -166,7 +166,7 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
               <textarea
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
-                placeholder="e.g., 'All three characters dance together in a magical forest, camera pans around them smoothly'"
+                placeholder="Describe the scene... e.g., 'dancing together in a magical forest' or 'standing together as camera orbits around them'"
                 className="w-full px-4 py-3 bg-white/10 text-white placeholder-white/40 border border-white/30 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"
                 rows={4}
                 disabled={loading}

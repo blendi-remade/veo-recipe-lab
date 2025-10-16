@@ -22,6 +22,15 @@ export default function IngredientCard({
   const [loading, setLoading] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
 
+  const getPlaceholder = () => {
+    const placeholders = [
+      'Try: "a futuristic robot chef", "a steampunk inventor", or "a cyberpunk hacker"',
+      'Try: "a magical crystal cave", "a floating sky castle", or "an ancient temple"',
+      'Try: "a mystical phoenix", "a friendly dragon", or "a glowing jellyfish"',
+    ];
+    return placeholders[slotNumber - 1] || placeholders[0];
+  };
+
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
 
@@ -97,7 +106,7 @@ export default function IngredientCard({
           <textarea
             value={prompt}
             onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Describe your ingredient (e.g., 'a magical wizard')"
+            placeholder={getPlaceholder()}
             className="w-full px-3 py-2 bg-white/10 text-white placeholder-white/50 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"
             rows={3}
             disabled={loading}
