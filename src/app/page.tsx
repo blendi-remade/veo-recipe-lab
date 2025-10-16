@@ -3,6 +3,7 @@
 import { useState } from "react";
 import IngredientCard from "@/components/IngredientCard";
 import MixingChamber from "@/components/MixingChamber";
+import Particles from "@/components/Particles";
 
 interface Ingredient {
   imageUrl: string | null;
@@ -47,6 +48,21 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 p-4 md:p-8 relative overflow-hidden">
+      {/* Add Particles Background */}
+      <div className="fixed inset-0 pointer-events-none opacity-50">
+        <Particles
+          particleCount={300}
+          particleColors={['#a855f7', '#ec4899', '#c084fc', '#f0abfc']}
+          particleSpread={12}
+          speed={0.15}
+          moveParticlesOnHover={true}
+          particleHoverFactor={6}
+          alphaParticles={true}
+          particleBaseSize={80}
+          sizeRandomness={1.5}
+        />
+      </div>
+
       {/* Ambient background effects */}
       <div className="absolute inset-0 opacity-30">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
