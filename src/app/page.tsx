@@ -1,103 +1,137 @@
-import Image from "next/image";
+"use client";
+
+import { useState } from "react";
+import IngredientCard from "@/components/IngredientCard";
+import MixingChamber from "@/components/MixingChamber";
+
+interface Ingredient {
+  imageUrl: string | null;
+  selected: boolean;
+}
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [ingredients, setIngredients] = useState<Ingredient[]>([
+    { imageUrl: null, selected: false },
+    { imageUrl: null, selected: false },
+    { imageUrl: null, selected: false },
+  ]);
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleIngredientGenerated = (slotIndex: number, imageUrl: string) => {
+    setIngredients((prev) =>
+      prev.map((ingredient, index) =>
+        index === slotIndex
+          ? { ...ingredient, imageUrl, selected: true }
+          : ingredient
+      )
+    );
+  };
+
+  const handleToggleSelect = (slotIndex: number) => {
+    setIngredients((prev) =>
+      prev.map((ingredient, index) =>
+        index === slotIndex
+          ? { ...ingredient, selected: !ingredient.selected }
+          : ingredient
+      )
+    );
+  };
+
+  const selectedImages = ingredients
+    .map((ingredient, index) => ({
+      url: ingredient.imageUrl!,
+      slot: index + 1,
+    }))
+    .filter((img) => img.url && ingredients[img.slot - 1].selected);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-purple-950 via-indigo-950 to-purple-900 p-4 md:p-8">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-8 md:mb-12">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <span className="text-5xl md:text-6xl">🧪</span>
+            <h1 className="text-4xl md:text-6xl font-bold text-white">
+              Visual Recipe Lab
+            </h1>
+            <span className="text-5xl md:text-6xl">🧪</span>
+          </div>
+          <p className="text-lg md:text-xl text-purple-200 max-w-3xl mx-auto">
+            Create incredible videos by mixing visual ingredients! Generate up
+            to 3 images, then combine them into one dynamic scene with AI.
+          </p>
+          <div className="mt-4 flex items-center justify-center gap-4 text-sm text-purple-300">
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+              Powered by Seedream v4
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 bg-pink-400 rounded-full animate-pulse"></span>
+              Veo 3.1
+            </span>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+
+        {/* Ingredient Cards */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4 text-center">
+            Step 1: Generate Your Ingredients
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {ingredients.map((ingredient, index) => (
+              <IngredientCard
+                key={index}
+                slotNumber={index + 1}
+                imageUrl={ingredient.imageUrl}
+                isSelected={ingredient.selected}
+                onGenerate={(imageUrl) =>
+                  handleIngredientGenerated(index, imageUrl)
+                }
+                onToggleSelect={() => handleToggleSelect(index)}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Connection Visual */}
+        {selectedImages.length > 0 && (
+          <div className="flex justify-center mb-6">
+            <div className="flex flex-col items-center">
+              <div className="text-4xl animate-bounce text-purple-300">↓</div>
+              <div className="text-sm text-purple-300 font-medium">
+                Mix them together
+              </div>
+              <div className="text-4xl animate-bounce text-purple-300">↓</div>
+            </div>
+          </div>
+        )}
+
+        {/* Mixing Chamber */}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold text-white mb-4 text-center">
+            Step 2: Mix Your Ingredients
+          </h2>
+          <MixingChamber selectedImages={selectedImages} />
+        </div>
+
+        {/* Footer */}
+        <div className="text-center mt-12 pb-8">
+          <div className="inline-block bg-white/5 backdrop-blur-lg rounded-full px-6 py-3 border border-white/10">
+            <p className="text-purple-200 text-sm">
+              Built with{" "}
+              <a
+                href="https://fal.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-purple-400 hover:text-purple-300 font-semibold underline"
+              >
+                fal.ai
+              </a>{" "}
+              • Next.js Demo
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
