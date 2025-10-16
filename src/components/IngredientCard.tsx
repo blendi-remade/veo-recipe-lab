@@ -5,7 +5,7 @@ import Image from "next/image";
 
 interface IngredientCardProps {
   slotNumber: number;
-  onGenerate: (imageUrl: string) => void;
+  onGenerate: (imageUrl: string, prompt: string) => void;
   isSelected: boolean;
   onToggleSelect: () => void;
   imageUrl: string | null;
@@ -35,7 +35,7 @@ export default function IngredientCard({
 
       const data = await response.json();
       if (response.ok) {
-        onGenerate(data.imageUrl);
+        onGenerate(data.imageUrl, prompt);
         setIsRegenerating(false);
       }
     } catch (error) {
@@ -45,11 +45,6 @@ export default function IngredientCard({
     }
   };
 
-  const handleEnhancePrompt = () => {
-    // Simple prompt enhancement
-    const enhanced = `${prompt}, highly detailed, professional lighting, cinematic composition, 8k quality`;
-    setPrompt(enhanced);
-  };
 
   return (
     <div
@@ -108,26 +103,17 @@ export default function IngredientCard({
             disabled={loading}
             autoFocus={isRegenerating}
           />
-          <div className="flex gap-2">
-            <button
-              onClick={handleEnhancePrompt}
-              disabled={!prompt.trim() || loading}
-              className="flex-1 bg-white/10 hover:bg-white/20 text-white text-sm py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
-            >
-              ✨ Enhance
-            </button>
-            <button
-              onClick={handleGenerate}
-              disabled={!prompt.trim() || loading}
-              className="flex-1 bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
-            >
-              {loading ? "..." : "Generate"}
-            </button>
-          </div>
+          <button
+            onClick={handleGenerate}
+            disabled={!prompt.trim() || loading}
+            className="w-full bg-purple-500 hover:bg-purple-600 text-white font-semibold py-2 px-3 rounded-lg transition-colors disabled:opacity-50"
+          >
+            {loading ? "..." : "✨ Generate"}
+          </button>
           {isRegenerating && (
             <button
               onClick={() => setIsRegenerating(false)}
-              className="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 px-3 rounded-lg transition-colors"
+              className="w-full bg-white/10 hover:bg-white/20 text-white text-xs py-2 px-3 rounded-lg transition-colors mt-2"
             >
               Cancel
             </button>

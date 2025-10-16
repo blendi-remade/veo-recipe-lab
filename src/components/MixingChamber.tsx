@@ -4,14 +4,53 @@ import { useState } from "react";
 import Image from "next/image";
 
 interface MixingChamberProps {
-  selectedImages: { url: string; slot: number }[];
+  selectedImages: { url: string; prompt: string; slot: number }[];
 }
 
 export default function MixingChamber({ selectedImages }: MixingChamberProps) {
   const [prompt, setPrompt] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
   const [loading, setLoading] = useState(false);
+  const [enhancing, setEnhancing] = useState(false);
   const [error, setError] = useState("");
+
+  const handleEnhancePrompt = async () => {
+    if (!prompt.trim()) return;
+
+    setEnhancing(true);
+    setError("");
+
+    try {
+      // Build context with all ingredient descriptions (no image bias)
+      const ingredientDescriptions = selectedImages
+        .map((img, idx) => `${img.prompt}`)
+        .join(", ");
+      
+      const enhancedInput = selectedImages.length > 0
+        ? `${prompt}. Scene elements: ${ingredientDescriptions}`
+        : prompt;
+
+      const response = await fetch("/api/enhance-video-prompt", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          prompt: enhancedInput,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to enhance prompt");
+      }
+
+      setPrompt(data.enhancedPrompt);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Failed to enhance prompt");
+    } finally {
+      setEnhancing(false);
+    }
+  };
 
   const handleGenerateVideo = async () => {
     if (!prompt.trim() || selectedImages.length === 0) return;
@@ -146,23 +185,42 @@ export default function MixingChamber({ selectedImages }: MixingChamberProps) {
               </div>
             )}
 
-            {/* Generate Button */}
-            <button
-              onClick={handleGenerateVideo}
-              disabled={loading || !prompt.trim() || selectedImages.length === 0}
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-500 disabled:to-gray-600 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg"
-            >
-              {loading ? (
-                <span className="flex items-center justify-center gap-2">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                  Mixing... (~1-2 minutes)
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  🎬 Generate Video
-                </span>
-              )}
-            </button>
+            {/* Enhance & Generate Buttons */}
+            <div className="flex gap-3">
+              <button
+                onClick={handleEnhancePrompt}
+                disabled={enhancing || loading || !prompt.trim()}
+                className="flex-1 bg-white/10 hover:bg-white/20 disabled:bg-white/5 text-white font-semibold py-4 px-6 rounded-xl transition-all disabled:cursor-not-allowed border border-white/20"
+              >
+                {enhancing ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Enhancing...
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    ✨ Enhance with AI
+                  </span>
+                )}
+              </button>
+              
+              <button
+                onClick={handleGenerateVideo}
+                disabled={loading || enhancing || !prompt.trim() || selectedImages.length === 0}
+                className="flex-[2] bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-gray-500 disabled:to-gray-600 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-105 disabled:scale-100 disabled:cursor-not-allowed shadow-lg"
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Mixing... (~1-2 minutes)
+                  </span>
+                ) : (
+                  <span className="flex items-center justify-center gap-2">
+                    🎬 Generate Video
+                  </span>
+                )}
+              </button>
+            </div>
           </div>
         </div>
       )}
