@@ -21,6 +21,8 @@ export default function IngredientCard({
   const [prompt, setPrompt] = useState("");
   const [loading, setLoading] = useState(false);
   const [isRegenerating, setIsRegenerating] = useState(false);
+  // Add new state for mode selection
+  const [mode, setMode] = useState<"generate" | "upload">("generate");
 
   const getPlaceholder = () => {
     const placeholders = [
@@ -54,6 +56,45 @@ export default function IngredientCard({
     }
   };
 
+  // Add new handler for file upload
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please upload an image file");
+      return;
+    }
+
+    // Validate file size (e.g., max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      alert("File size must be less than 10MB");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Convert to data URL for immediate use
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const dataUrl = reader.result as string;
+        // Use filename as the prompt
+        const fileName = file.name.replace(/\.[^/.]+$/, "");
+        onGenerate(dataUrl, `Uploaded: ${fileName}`);
+        setIsRegenerating(false);
+      };
+      reader.onerror = () => {
+        console.error("Error reading file");
+        alert("Failed to read file");
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error("Error uploading image:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div
@@ -100,25 +141,78 @@ export default function IngredientCard({
         </div>
       ) : null}
 
-      {/* Prompt Input - Always show when no image or regenerating */}
+      {/* Mode Toggle - Show when no image or regenerating */}
       {(!imageUrl || isRegenerating) && !loading && (
         <div className="space-y-3">
-          <textarea
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder={getPlaceholder()}
-            className="w-full px-3 py-2 bg-white/10 text-white placeholder-white/50 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"
-            rows={3}
-            disabled={loading}
-            autoFocus={isRegenerating}
-          />
-          <button
-            onClick={handleGenerate}
-            disabled={!prompt.trim() || loading}
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 shadow-lg hover:shadow-purple-500/50"
-          >
-            {loading ? "..." : "✨ Generate"}
-          </button>
+          {/* Toggle Buttons */}
+          <div className="flex gap-2 mb-3">
+            <button
+              onClick={() => setMode("generate")}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                mode === "generate"
+                  ? "bg-purple-500 text-white"
+                  : "bg-white/10 text-white/70 hover:bg-white/20"
+              }`}
+            >
+              ✨ Generate
+            </button>
+            <button
+              onClick={() => setMode("upload")}
+              className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium transition-all ${
+                mode === "upload"
+                  ? "bg-purple-500 text-white"
+                  : "bg-white/10 text-white/70 hover:bg-white/20"
+              }`}
+            >
+              📤 Upload
+            </button>
+          </div>
+
+          {/* Generate Mode */}
+          {mode === "generate" ? (
+            <>
+              <textarea
+                value={prompt}
+                onChange={(e) => setPrompt(e.target.value)}
+                placeholder={getPlaceholder()}
+                className="w-full px-3 py-2 bg-white/10 text-white placeholder-white/50 border border-white/30 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 resize-none"
+                rows={3}
+                disabled={loading}
+                autoFocus={isRegenerating}
+              />
+              <button
+                onClick={handleGenerate}
+                disabled={!prompt.trim() || loading}
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:opacity-50 disabled:hover:scale-100 shadow-lg hover:shadow-purple-500/50"
+              >
+                {loading ? "..." : "✨ Generate"}
+              </button>
+            </>
+          ) : (
+            /* Upload Mode */
+            <div className="space-y-3">
+              <div className="relative">
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  id={`file-upload-${slotNumber}`}
+                  disabled={loading}
+                />
+                <label
+                  htmlFor={`file-upload-${slotNumber}`}
+                  className="block w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-3 px-4 rounded-xl transition-all transform hover:scale-105 disabled:opacity-50 cursor-pointer text-center shadow-lg hover:shadow-purple-500/50"
+                >
+                  📤 Choose Image
+                </label>
+              </div>
+              <p className="text-white/50 text-xs text-center">
+                Supports JPG, PNG, GIF (max 10MB)
+              </p>
+            </div>
+          )}
+
           {isRegenerating && (
             <button
               onClick={() => setIsRegenerating(false)}
