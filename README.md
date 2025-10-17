@@ -17,9 +17,6 @@ Visual Recipe Lab is an interactive demo that demonstrates how to combine multip
 - **🎨 Image Generation** - Generate high-quality images with Seedream v4
 - **🎥 Video Synthesis** - Combine multiple images into coherent video scenes with Veo 3.1
 - **✨ AI Prompt Enhancement** - Automatically improve your video prompts with LLM assistance
-- **🔄 Real-time Updates** - See your creations come to life with live progress tracking
-- **💫 Beautiful UI** - Glassmorphism design with smooth animations
-- **📱 Responsive** - Works seamlessly on desktop and mobile
 
 ## 🚀 Getting Started
 
@@ -32,8 +29,7 @@ Visual Recipe Lab is an interactive demo that demonstrates how to combine multip
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/YOUR_USERNAME/veo-recipe-lab.git
-cd veo-recipe-lab
+git clone https://github.com/blendi-remade/veo-recipe-lab.git
 ```
 
 2. Install dependencies:
@@ -99,49 +95,6 @@ veo-recipe-lab/
 ├── .env.local                       # Environment variables (create this!)
 └── package.json
 ```
-
-## 🎨 Key Features Explained
-
-### Glass Morphism Design
-Beautiful, modern UI with backdrop blur effects and subtle gradients that create depth.
-
-### Smart Prompt Context
-When enhancing video prompts, the app automatically includes descriptions of all selected ingredients, ensuring the AI understands your full scene composition.
-
-### Progressive Enhancement
-Generate images independently and select only the ones you want to include in your final video - full creative control!
-
-## 🚢 Deploy Your Own
-
-### Deploy on Vercel
-
-The easiest way to deploy is using [Vercel](https://vercel.com):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/YOUR_USERNAME/veo-recipe-lab)
-
-**Important**: Don't forget to add your `FAL_KEY` environment variable in the Vercel project settings!
-
-### Other Platforms
-
-Works on any platform that supports Next.js:
-- [Netlify](https://www.netlify.com/)
-- [Railway](https://railway.app/)
-- [Render](https://render.com/)
-
-## 📝 License
-
-This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- Built with [fal.ai](https://fal.ai) - The fastest way to run AI models
-- Powered by [Seedream v4](https://fal.ai/models/fal-ai/bytedance/seedream/v4/text-to-image) by ByteDance
-- Video generation by [Veo 3.1](https://fal.ai/models/fal-ai/veo3.1/reference-to-video) by Google DeepMind
-- Built with [Next.js](https://nextjs.org) and [Tailwind CSS](https://tailwindcss.com)
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome! Feel free to check the [issues page](https://github.com/YOUR_USERNAME/veo-recipe-lab/issues).
 
 ## 📧 Questions?
 
