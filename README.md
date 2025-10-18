@@ -64,7 +64,7 @@ npm run dev
 3. **Download & Share**
    - Watch your creation
    - Download the video
-   - Create another masterpiece!
+   - Create another masterpiece! The possibilites are endless!
 
 ## 🛠️ Tech Stack
 
